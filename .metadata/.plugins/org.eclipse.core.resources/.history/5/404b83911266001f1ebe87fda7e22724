@@ -1,0 +1,29 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: korisnik-service
+          uri: http://localhost:8006  
+          predicates:
+            - Path=/korisnici/**
+        - id: auto-service
+          uri: http://localhost:8003/
+          predicates:
+            - Path=/automobili/**  
+          filters:
+            - name: CookieToHeader
+              args:
+                cookieName: Korisnik-Id
+                headerName: Korisnik-Id
+        - id: komentar-service
+          uri: http://localhost:8007/
+          predicates:
+            - Path=/komentari/**  
+          filters:
+            - name: CookieToHeader
+              args:
+                cookieName: Korisnik-Id
+                headerName: Korisnik-Id
+          
+server:
+  port: 8080

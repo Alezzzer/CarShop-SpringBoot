@@ -1,0 +1,43 @@
+package com.controller;
+
+
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.model.AzKorisnici;
+import com.service.KorisnikService;
+
+import jakarta.servlet.http.HttpSession;
+
+@RestController
+@RequestMapping("/korisnici")
+public class KorisnikController {
+
+    @Autowired
+    private KorisnikService korisnikService;
+
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody AzKorisnici korisnik) {
+        korisnikService.registerUser(korisnik);
+        return ResponseEntity.ok("User registered successfully!");
+    }
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody String email,@RequestBody String password, HttpSession session) {
+        AzKorisnici korisnik = korisnikService.loginUser(email, password);
+        if (korisnik != null) {
+            session.setAttribute("korisnikId", korisnik.getKorisnikId());
+            return ResponseEntity.ok("Uspešno ste se prijavili!");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Pogrešan email ili lozinka.");
+        }
+    }
+
+}

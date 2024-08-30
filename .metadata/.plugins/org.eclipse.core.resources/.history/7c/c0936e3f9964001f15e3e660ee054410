@@ -1,0 +1,18 @@
+package com.repository;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.model.AzKorisnici;
+
+
+
+public interface KorisniciRepository {
+
+@Repository
+public interface KorisnikRepository extends JpaRepository<AzKorisnici, Integer> {
+   
+    Optional<AzKorisnici> findByEmailAndLozinka(String email, String lozinka);
+}

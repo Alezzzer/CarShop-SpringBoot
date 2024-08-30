@@ -1,0 +1,26 @@
+package com.dto;
+
+public class PlacanjeRequestDTO {
+    private int narudzbaId;
+    private String nacinPlacanja;
+ 
+
+    // Getteri i Setteri
+
+    public int getNarudzbaId() {
+        return narudzbaId;
+    }
+
+    public void setNarudzbaId(int narudzbaId) {
+        this.narudzbaId = narudzbaId;
+    }
+
+    public String getNacinPlacanja() {
+        return nacinPlacanja;
+    }
+
+    public void setNacinPlacanja(String nacinPlacanja) {
+        this.nacinPlacanja = nacinPlacanja;
+    }
+
+}

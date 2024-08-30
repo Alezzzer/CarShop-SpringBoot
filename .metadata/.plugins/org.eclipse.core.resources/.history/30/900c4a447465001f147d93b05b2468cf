@@ -1,0 +1,17 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: korisnik-service
+          uri: http://localhost:8006/  
+          predicates:
+            - Path=/korisnici/**
+        - id: auto-service
+          uri: http://localhost:8003/
+          predicates:
+            - Path=/automobili/**  
+          filters:
+            - AddRequestHeader=Korisnik-Id, static-value
+          
+server:
+  port: 8080

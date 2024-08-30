@@ -1,0 +1,28 @@
+package com.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.dto.AzKomentariDTO;
+import com.dto.AzTemaDTO;
+import com.proxy.ProxyKomentar;
+
+@Service
+public class BlogService {
+@Autowired 
+ProxyKomentar proxykomentar;
+	
+
+public List<AzTemaDTO> vratiTeme() {
+	List<AzTemaDTO> lista= proxykomentar.getAllAzTema();
+	return lista;
+}
+
+public List<AzKomentariDTO> vratiKomentare(){
+	List<AzKomentariDTO> lista=proxykomentar.getAllAzKomentari();
+	return lista;
+}
+	
+}

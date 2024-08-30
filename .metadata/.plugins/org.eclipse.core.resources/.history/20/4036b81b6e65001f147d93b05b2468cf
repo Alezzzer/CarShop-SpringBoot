@@ -1,0 +1,46 @@
+package com.controller;
+
+
+
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.dto.LoginRequestDTO;
+import com.model.AzKorisnici;
+import com.service.KorisnikService;
+
+@RestController
+@RequestMapping("/korisnici")
+public class KorisnikController {
+
+    @Autowired
+    private KorisnikService korisnikService;
+
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody AzKorisnici korisnik) {
+        korisnikService.registerUser(korisnik);
+        return ResponseEntity.ok("User registered successfully!");
+    }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequest) {
+        
+        AzKorisnici korisnik = korisnikService.loginUser(loginRequest.getEmail(), loginRequest.getLozinka());
+        if (korisnik != null) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Korisnik-Id", String.valueOf(korisnik.getKorisnikId()));
+            return new ResponseEntity<>("User logged in successfully", headers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Bad login", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+}

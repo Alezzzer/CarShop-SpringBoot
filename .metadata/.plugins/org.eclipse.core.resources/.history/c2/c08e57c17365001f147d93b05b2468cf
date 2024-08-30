@@ -1,0 +1,20 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: korisnik-service
+          uri: http://localhost:8006
+          predicates:
+            - Path=/korisnici/**
+          filters:
+            - RewritePath=/korisnici/(?<segment>.*), /$\\{segment}
+
+        - id: auto-service
+          uri: http://localhost:8003/
+          predicates:
+            - Path=/automobili/**
+          filters:
+            - RewritePath=/automobili/(?<segment>.*), /$\\{segment}
+
+server:
+  port: 8080

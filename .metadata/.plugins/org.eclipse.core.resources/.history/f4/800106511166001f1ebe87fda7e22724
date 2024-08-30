@@ -1,0 +1,22 @@
+package com.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.dto.AzTemaDTO;
+import com.proxy.ProxyKomentar;
+
+@Service
+public class AutoshopService {
+@Autowired 
+ProxyKomentar proxykomentar;
+	
+
+public List<AzTemaDTO> vratiTeme() {
+	List<AzTemaDTO> lista= proxykomentar.getAllAzTema();
+	return lista;
+}
+	
+}

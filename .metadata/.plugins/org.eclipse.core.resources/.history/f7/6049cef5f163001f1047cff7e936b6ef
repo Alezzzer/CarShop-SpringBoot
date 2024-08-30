@@ -1,0 +1,73 @@
+package com.model;
+
+import java.io.Serializable;
+import jakarta.persistence.*;
+
+
+/**
+ * The persistent class for the azUser database table.
+ * 
+ */
+@Table(name = "azUser")
+
+@Entity
+@NamedQuery(name="AzUser.findAll", query="SELECT a FROM AzUser a")
+public class AzUser implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int idazUser;
+
+	private String email;
+
+	private String ime;
+
+	private String lozinka;
+
+	private String prezime;
+
+	public AzUser() {
+	}
+
+	public int getIdazUser() {
+		return this.idazUser;
+	}
+
+	public void setIdazUser(int idazUser) {
+		this.idazUser = idazUser;
+	}
+
+	public String getEamil() {
+		return this.email;
+	}
+
+	public void setEamil(String eamil) {
+		this.email = eamil;
+	}
+
+	public String getIme() {
+		return this.ime;
+	}
+
+	public void setIme(String ime) {
+		this.ime = ime;
+	}
+
+	public String getLozinka() {
+		return this.lozinka;
+	}
+
+	public void setLozinka(String lozinka) {
+		this.lozinka = lozinka;
+	}
+
+	public String getPrezime() {
+		return this.prezime;
+	}
+
+	public void setPrezime(String prezime) {
+		this.prezime = prezime;
+	}
+
+}

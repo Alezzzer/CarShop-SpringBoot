@@ -1,0 +1,45 @@
+package com.controller;
+
+import com.dto.KomentarRequest;
+import com.model.AzKomentari;
+import com.model.AzTema;
+
+import com.service.KomentariService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/komentari")
+public class KomentariController {
+
+    @Autowired
+    private KomentariService komentariService;
+
+    @GetMapping("/teme")
+    public List<AzTema> getAllAzTema() {
+        return komentariService.getAllAzTema();
+    }
+
+    @GetMapping("/svikomentari")
+    public List<AzKomentari> getAllAzKomentari() {
+        return komentariService.getAllAzKomentari();
+    }
+
+    @GetMapping("/svikomentarinatemu//{temaId}")
+    public List<AzKomentari> getAzKomentariByTemaId(@RequestParam int temaId) {
+        return komentariService.getAzKomentariByTemaId(temaId);
+    }
+    
+    @GetMapping("/mojikomentari")
+    public List<AzKomentari> getAzKomentarById(@CookieValue("Korisnik-Id") int korisnikId){
+    	return komentariService.getAzKomentarById(korisnikId);
+    }
+    
+    @PostMapping("/dodajkomentar")
+    public AzKomentari addNewKomentar(@RequestBody KomentarRequest request, @CookieValue("Korisnik-Id") int korisnikId) {
+        return komentariService.addNewKomentar(request, korisnikId);
+    }
+}

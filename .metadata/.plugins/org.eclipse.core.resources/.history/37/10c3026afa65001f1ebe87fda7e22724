@@ -1,0 +1,80 @@
+package com.model;
+
+import java.io.Serializable;
+import jakarta.persistence.*;
+import java.util.Date;
+
+
+/**
+ * The persistent class for the AzKomentari database table.
+ * 
+ */
+@Entity
+@NamedQuery(name="AzKomentari.findAll", query="SELECT a FROM AzKomentari a")
+public class AzKomentari implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="komentar_id")
+	private int komentarId;
+
+	@Temporal(TemporalType.DATE)
+	private Date datum;
+
+	private String tekst;
+
+	//bi-directional many-to-one association to AzKorisnici
+	@ManyToOne
+	@JoinColumn(name="korisnik_id")
+	private AzKorisnici azKorisnici;
+
+	//bi-directional many-to-one association to AzTema
+	@ManyToOne
+	@JoinColumn(name="tema_id")
+	private AzTema azTema;
+
+	public AzKomentari() {
+	}
+
+	public int getKomentarId() {
+		return this.komentarId;
+	}
+
+	public void setKomentarId(int komentarId) {
+		this.komentarId = komentarId;
+	}
+
+	public Date getDatum() {
+		return this.datum;
+	}
+
+	public void setDatum(Date datum) {
+		this.datum = datum;
+	}
+
+	public String getTekst() {
+		return this.tekst;
+	}
+
+	public void setTekst(String tekst) {
+		this.tekst = tekst;
+	}
+
+	public AzKorisnici getAzKorisnici() {
+		return this.azKorisnici;
+	}
+
+	public void setAzKorisnici(AzKorisnici azKorisnici) {
+		this.azKorisnici = azKorisnici;
+	}
+
+	public AzTema getAzTema() {
+		return this.azTema;
+	}
+
+	public void setAzTema(AzTema azTema) {
+		this.azTema = azTema;
+	}
+
+}

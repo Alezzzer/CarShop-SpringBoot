@@ -1,0 +1,20 @@
+package com.proxy;
+
+import java.util.List;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import com.dto.AzTemaDTO;
+
+
+
+@FeignClient(name="komentar-service",url="localhost:8007")
+public interface ProxyKomentar {
+
+	 @GetMapping("/komentari/teme")
+	    public List<AzTemaDTO> getAllAzTema();
+	  
+	
+	
+}

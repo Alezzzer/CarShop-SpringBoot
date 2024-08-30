@@ -1,0 +1,34 @@
+package com.service;
+
+
+
+import com.model.AzKomentari;
+import com.model.AzTema;
+import com.repository.AzKomentariRepository;
+import com.repository.AzTemaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class KomentariService {
+
+    @Autowired
+    private AzTemaRepository azTemaRepository;
+
+    @Autowired
+    private AzKomentariRepository azKomentariRepository;
+
+    public List<AzTema> getAllAzTema() {
+        return azTemaRepository.findAll();
+    }
+
+    public List<AzKomentari> getAllAzKomentari() {
+        return azKomentariRepository.findAll();
+    }
+
+    public List<AzKomentari> getAzKomentariByNaslov(String naslov) {
+        return azKomentariRepository.findByAzTemaNaslov(naslov);
+    }
+}

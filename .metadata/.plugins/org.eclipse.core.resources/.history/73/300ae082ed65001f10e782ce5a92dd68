@@ -1,0 +1,170 @@
+package com.controller;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.dto.AutomobilDTO;
+import com.model.AzNarudzbina;
+import com.service.AzAutomobiliService;
+
+@RestController
+@RequestMapping("/automobili")
+public class AzAutomobiliController {
+
+    private final AzAutomobiliService azAutomobiliService;
+
+    public AzAutomobiliController(AzAutomobiliService azAutomobiliService) {
+        this.azAutomobiliService = azAutomobiliService;
+    }
+
+    @GetMapping("/svi")
+    public List<AutomobilDTO> getAllAutomobili() {
+        return azAutomobiliService.findAll().stream()
+                .map(a -> new AutomobilDTO(
+                        a.getAutomobilId(),
+                        a.getCena(),
+                        a.getGodinaProizvodnje(),
+                        a.getMarka(),
+                        a.getModel(),
+                		a.getKilometraza()))
+                .collect(Collectors.toList());
+    }
+    
+    @GetMapping("/tip")
+    public List<AutomobilDTO> getAutomobiliByTip(@RequestParam String nazivTipa) {
+        return azAutomobiliService.findByTipAutomobila(nazivTipa).stream()
+        		 .map(a -> new AutomobilDTO(
+                         a.getAutomobilId(),
+                         a.getCena(),
+                         a.getGodinaProizvodnje(),
+                         a.getMarka(),
+                         a.getModel(),
+                 		a.getKilometraza()))
+                 .collect(Collectors.toList());
+    }
+    
+    @GetMapping("/cenamanje")
+    public List<AutomobilDTO> getAutomobiliByCenaManje(@RequestParam int cena) {
+        return azAutomobiliService.getAutomobiliByCenaLessThan(cena).stream()
+        		 .map(a -> new AutomobilDTO(
+                         a.getAutomobilId(),
+                         a.getCena(),
+                         a.getGodinaProizvodnje(),
+                         a.getMarka(),
+                         a.getModel(),
+                 		a.getKilometraza()))
+                 .collect(Collectors.toList());
+    }
+    @GetMapping("/cenavece")
+    public List<AutomobilDTO> getAutomobiliByCenaVece(@RequestParam int cena) {
+        return azAutomobiliService.getAutomobiliByCenaGreaterThan(cena).stream()
+        		 .map(a -> new AutomobilDTO(
+                         a.getAutomobilId(),
+                         a.getCena(),
+                         a.getGodinaProizvodnje(),
+                         a.getMarka(),
+                         a.getModel(),
+                 		a.getKilometraza()))
+                 .collect(Collectors.toList());
+    }
+    
+    @GetMapping("/kilometrazamanje")
+    public List<AutomobilDTO> getAutomobiliByKmManje(@RequestParam int km) {
+        return azAutomobiliService.getAutomobiliByKilometrazaLessThan(km).stream()
+        		 .map(a -> new AutomobilDTO(
+                         a.getAutomobilId(),
+                         a.getCena(),
+                         a.getGodinaProizvodnje(),
+                         a.getMarka(),
+                         a.getModel(),
+                 		a.getKilometraza()))
+                 .collect(Collectors.toList());
+    }
+    
+    @GetMapping("/kilometrazavece")
+    public List<AutomobilDTO> getAutomobiliByKmVece(@RequestParam int km) {
+        return azAutomobiliService.getAutomobiliByKilometrazaGreaterThan(km).stream()
+        		 .map(a -> new AutomobilDTO(
+                         a.getAutomobilId(),
+                         a.getCena(),
+                         a.getGodinaProizvodnje(),
+                         a.getMarka(),
+                         a.getModel(),
+                 		a.getKilometraza()))
+                 .collect(Collectors.toList());
+    }
+    @GetMapping("/godistemanje")
+    public List<AutomobilDTO> getAutomobiliByGodisteManje(@RequestParam int god) {
+        return azAutomobiliService.getAutomobiliByGodineLessThan(god).stream()
+        		 .map(a -> new AutomobilDTO(
+                         a.getAutomobilId(),
+                         a.getCena(),
+                         a.getGodinaProizvodnje(),
+                         a.getMarka(),
+                         a.getModel(),
+                 		a.getKilometraza()))
+                 .collect(Collectors.toList());
+    }
+    @GetMapping("/godistevece")
+    public List<AutomobilDTO> getAutomobiliByGodisteVEce(@RequestParam int god) {
+        return azAutomobiliService.getAutomobiliByGodineGreaterThan(god).stream()
+        		 .map(a -> new AutomobilDTO(
+                         a.getAutomobilId(),
+                         a.getCena(),
+                         a.getGodinaProizvodnje(),
+                         a.getMarka(),
+                         a.getModel(),
+                 		a.getKilometraza()))
+                 .collect(Collectors.toList());
+    }
+    
+    @GetMapping("/marka")
+    public List<AutomobilDTO> getAutomobiliByMarka(@RequestParam String nazivMarke) {
+        return azAutomobiliService.getAutomobiliByMarka(nazivMarke).stream()
+        		 .map(a -> new AutomobilDTO(
+                         a.getAutomobilId(),
+                         a.getCena(),
+                         a.getGodinaProizvodnje(),
+                         a.getMarka(),
+                         a.getModel(),
+                 		a.getKilometraza()))
+                 .collect(Collectors.toList());
+    }
+    
+    
+
+    @PostMapping("/povezi-korisnika/{automobilId}")
+    public ResponseEntity<String> poveziKorisnikaSaAutomobilom(@CookieValue("Korisnik-Id") int korisnikId,
+                                                               @PathVariable int automobilId) {
+        try {
+            azAutomobiliService.poveziKorisnikaSaAutomobilom(korisnikId, automobilId);
+            return ResponseEntity.ok("Korisnik je uspešno povezan sa automobilom i narudžbinom.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Došlo je do greške: " + e.getMessage());
+        }
+    }
+
+
+    @GetMapping("/mojenarudzbine")
+    public ResponseEntity<List<AzNarudzbina>> getNarudzbineByKorisnikId(@CookieValue("Korisnik-Id") int korisnikId) {
+        try {
+            List<AzNarudzbina> narudzbine = azAutomobiliService.findNarudzbineByKorisnikId(korisnikId);
+            if (narudzbine.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(narudzbine);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+    
+}
